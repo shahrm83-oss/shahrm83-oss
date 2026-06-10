@@ -7,25 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* ═══════════════════════════════════════════
-       TOKENS & RESET
-    ═══════════════════════════════════════════ */
     :root {
       --navy:       #0d1b2a;
       --navy-mid:   #1a2e45;
       --navy-light: #2c4a6e;
       --white:      #ffffff;
       --off-white:  #f7f6f2;
-      --accent:     #c8964b;        /* warm amber — engineering / brass */
+      --accent:     #c8964b;
       --accent-dim: #e8c98a;
       --text-body:  #2a3a4a;
       --text-muted: #6b7f94;
       --border:     #dde3eb;
-
       --font-display: 'Playfair Display', Georgia, serif;
       --font-mono:    'DM Mono', 'Courier New', monospace;
       --font-sans:    'DM Sans', system-ui, sans-serif;
-
       --radius:  6px;
       --shadow:  0 4px 24px rgba(13,27,42,.08);
       --shadow-hover: 0 12px 48px rgba(13,27,42,.16);
@@ -33,9 +28,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: var(--font-sans);
       background: var(--white);
@@ -43,548 +36,113 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
+    body.modal-open { overflow: hidden; }
 
-    /* ═══════════════════════════════════════════
-       REUSABLE UTILITIES
-    ═══════════════════════════════════════════ */
-    .container {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+    /* ── Utilities ── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
 
     .section-label {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: block;
-      margin-bottom: 1rem;
+      font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--accent);
+      display: block; margin-bottom: 1rem;
     }
 
     .section-title {
       font-family: var(--font-display);
       font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1.15;
-      color: var(--navy);
+      font-weight: 700; line-height: 1.15; color: var(--navy);
     }
 
-    /* Fade-in animation on load */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    .fade-up {
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
-    }
+    .fade-up { opacity: 0; animation: fadeUp 0.7s ease forwards; }
     .delay-1 { animation-delay: 0.1s; }
     .delay-2 { animation-delay: 0.25s; }
     .delay-3 { animation-delay: 0.4s; }
     .delay-4 { animation-delay: 0.55s; }
     .delay-5 { animation-delay: 0.7s; }
 
-    /* ═══════════════════════════════════════════
-       NAV
-    ═══════════════════════════════════════════ */
+    /* ── Nav ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       transition: box-shadow var(--transition);
     }
-
-    nav.scrolled {
-      box-shadow: 0 2px 16px rgba(13,27,42,.08);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-
-    .nav-logo {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--navy);
-      text-decoration: none;
-      letter-spacing: -0.01em;
-    }
-
-    .nav-logo span {
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-body);
-      text-decoration: none;
-      position: relative;
-      transition: color var(--transition);
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      width: 0; height: 1px;
-      background: var(--accent);
-      transition: width var(--transition);
-    }
-
+    nav.scrolled { box-shadow: 0 2px 16px rgba(13,27,42,.08); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav-logo { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--navy); text-decoration: none; letter-spacing: -0.01em; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-body); text-decoration: none; position: relative; transition: color var(--transition); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width var(--transition); }
     .nav-links a:hover { color: var(--navy); }
     .nav-links a:hover::after { width: 100%; }
 
-    .nav-cta {
-      background: var(--navy) !important;
-      color: var(--white) !important;
-      padding: 0.5rem 1.2rem;
-      border-radius: var(--radius);
-      font-family: var(--font-mono) !important;
-      font-size: 0.75rem !important;
-      letter-spacing: 0.08em;
-      transition: background var(--transition), transform var(--transition) !important;
-    }
-
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover { background: var(--accent) !important; transform: translateY(-1px); }
-
-    /* ═══════════════════════════════════════════
-       HERO
-    ═══════════════════════════════════════════ */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background: var(--white);
-      padding-top: 64px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Blueprint grid background */
-    #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(13,27,42,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(13,27,42,.035) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-    }
-
-    /* Accent blob */
-    #hero::after {
-      content: '';
-      position: absolute;
-      top: -120px; right: -120px;
-      width: 540px; height: 540px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,150,75,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 28px; height: 1px;
-      background: var(--accent);
-    }
-
-    .hero-headline {
-      font-family: var(--font-display);
-      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: var(--navy);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-headline em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-bio {
-      font-size: 1.05rem;
-      color: var(--text-body);
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-      line-height: 1.75;
-      font-weight: 300;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      background: var(--navy);
-      color: var(--white);
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.85rem 2rem;
-      border-radius: var(--radius);
-      text-decoration: none;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-    }
-
-    .btn-primary:hover {
-      background: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(200,150,75,.35);
-    }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--navy);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 2px;
-      transition: color var(--transition), border-color var(--transition);
-    }
-
+    /* ── Hero ── */
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; background: var(--white); padding-top: 64px; position: relative; overflow: hidden; }
+    #hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(13,27,42,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(13,27,42,.035) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
+    #hero::after { content: ''; position: absolute; top: -120px; right: -120px; width: 540px; height: 540px; border-radius: 50%; background: radial-gradient(circle, rgba(200,150,75,.12) 0%, transparent 70%); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 340px; gap: 4rem; align-items: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+    .hero-tag::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
+    .hero-headline { font-family: var(--font-display); font-size: clamp(2.6rem, 5.5vw, 4.2rem); font-weight: 900; line-height: 1.08; letter-spacing: -0.02em; color: var(--navy); margin-bottom: 1.5rem; }
+    .hero-headline em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 1.05rem; color: var(--text-body); max-width: 520px; margin-bottom: 2.5rem; line-height: 1.75; font-weight: 300; }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-block; background: var(--navy); color: var(--white); font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem 2rem; border-radius: var(--radius); text-decoration: none; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,150,75,.35); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: color var(--transition), border-color var(--transition); }
     .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+    .hero-card { background: var(--navy); border-radius: 12px; padding: 2rem; color: var(--white); position: relative; overflow: hidden; }
+    .hero-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(200,150,75,.15); }
+    .hero-card-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-dim); margin-bottom: 1.5rem; }
+    .hero-card-stat { margin-bottom: 1.4rem; position: relative; z-index: 1; }
+    .hero-card-stat .num { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; color: var(--white); line-height: 1; }
+    .hero-card-stat .label { font-size: 0.82rem; color: rgba(255,255,255,.55); margin-top: 0.2rem; }
+    .hero-card-divider { border: none; border-top: 1px solid rgba(255,255,255,.1); margin: 1.2rem 0; }
+    .hero-card-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; position: relative; z-index: 1; }
+    .tag-pill { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.18); border-radius: 20px; padding: 0.3rem 0.75rem; }
 
-    /* Hero sidebar card */
-    .hero-card {
-      background: var(--navy);
-      border-radius: 12px;
-      padding: 2rem;
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: '';
-      position: absolute;
-      top: -40px; right: -40px;
-      width: 180px; height: 180px;
-      border-radius: 50%;
-      background: rgba(200,150,75,.15);
-    }
-
-    .hero-card-label {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-dim);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-card-stat {
-      margin-bottom: 1.4rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-card-stat .num {
-      font-family: var(--font-display);
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .hero-card-stat .label {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,.55);
-      margin-top: 0.2rem;
-    }
-
-    .hero-card-divider {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,.1);
-      margin: 1.2rem 0;
-    }
-
-    .hero-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tag-pill {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.7);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 20px;
-      padding: 0.3rem 0.75rem;
-    }
-
-    /* ═══════════════════════════════════════════
-       ABOUT / SKILLS
-    ═══════════════════════════════════════════ */
-    #about {
-      padding: 7rem 0;
-      background: var(--off-white);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-
-    .about-text p {
-      color: var(--text-body);
-      margin-bottom: 1rem;
-      font-size: 1rem;
-      line-height: 1.8;
-      font-weight: 300;
-    }
-
-    .about-text p + p {
-      margin-top: 1rem;
-    }
-
-    .about-highlight {
-      font-weight: 500;
-      color: var(--navy);
-    }
-
+    /* ── About ── */
+    #about { padding: 7rem 0; background: var(--off-white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-text p { color: var(--text-body); margin-bottom: 1rem; font-size: 1rem; line-height: 1.8; font-weight: 300; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-highlight { font-weight: 500; color: var(--navy); }
     .skills-col .section-label { margin-bottom: 0.5rem; }
     .skills-col .section-title { margin-bottom: 2rem; font-size: 1.8rem; }
+    .skill-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .skill-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem 1.75rem; display: flex; gap: 1.25rem; align-items: flex-start; transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition); cursor: default; }
+    .skill-card:hover { box-shadow: var(--shadow-hover); transform: translateX(6px); border-color: var(--accent); }
+    .skill-icon { flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .skill-card-body h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+    .skill-card-body p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
 
-    .skill-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .skill-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem 1.75rem;
-      display: flex;
-      gap: 1.25rem;
-      align-items: flex-start;
-      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
-      cursor: default;
-    }
-
-    .skill-card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateX(6px);
-      border-color: var(--accent);
-    }
-
-    .skill-icon {
-      flex-shrink: 0;
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      background: var(--navy);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-
-    .skill-card-body h3 {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 0.3rem;
-    }
-
-    .skill-card-body p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* ═══════════════════════════════════════════
-       PROJECTS / WORK
-    ═══════════════════════════════════════════ */
-    #work {
-      padding: 7rem 0;
-      background: var(--white);
-    }
-
-    .work-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 3.5rem;
-    }
-
-    .work-link {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color var(--transition), border-color var(--transition);
-      padding-bottom: 2px;
-    }
-
+    /* ── Work / Projects ── */
+    #work { padding: 7rem 0; background: var(--white); }
+    .work-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3.5rem; }
+    .work-link { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color var(--transition), border-color var(--transition); padding-bottom: 2px; }
     .work-link:hover { color: var(--accent); border-color: var(--accent); }
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.75rem; }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.75rem;
-    }
+    .project-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--white); transition: box-shadow var(--transition), transform var(--transition); cursor: pointer; color: inherit; display: block; }
+    .project-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
 
-    .project-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--white);
-      transition: box-shadow var(--transition), transform var(--transition);
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .project-card:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-4px);
-    }
-
-    .project-thumb {
-      height: 200px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* ── Project 1: blueprint-grid aesthetic ── */
-    .project-thumb.thumb-1 {
-      background: var(--navy);
-    }
-
-    .thumb-1-art {
-      position: relative;
-      width: 100%; height: 100%;
-    }
-
-    .thumb-1-art::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: 32px 32px;
-    }
-
-    .thumb-1-circle {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 110px; height: 110px;
-      border-radius: 50%;
-      border: 2px dashed rgba(200,150,75,.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .thumb-1-inner {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.8;
-    }
-
-    /* ── Project 2: data/chart aesthetic ── */
-    .project-thumb.thumb-2 {
-      background: #f0f4f8;
-    }
-
-    .thumb-2-art {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      padding: 0 2rem 1.5rem;
-      height: 100%;
-      width: 100%;
-    }
-
-    .thumb-bar {
-      flex: 1;
-      border-radius: 4px 4px 0 0;
-      background: var(--navy-light);
-      opacity: 0.7;
-      transition: opacity var(--transition);
-    }
-
+    .project-thumb { height: 200px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .project-thumb.thumb-1 { background: var(--navy); }
+    .thumb-1-art { position: relative; width: 100%; height: 100%; }
+    .thumb-1-art::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 32px 32px; }
+    .thumb-1-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 110px; height: 110px; border-radius: 50%; border: 2px dashed rgba(200,150,75,.5); display: flex; align-items: center; justify-content: center; }
+    .thumb-1-inner { width: 60px; height: 60px; border-radius: 50%; background: var(--accent); opacity: 0.8; }
+    .project-thumb.thumb-2 { background: #f0f4f8; }
+    .thumb-2-art { display: flex; align-items: flex-end; gap: 10px; padding: 0 2rem 1.5rem; height: 100%; width: 100%; }
+    .thumb-bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--navy-light); opacity: 0.7; transition: opacity var(--transition); }
     .project-card:hover .thumb-bar { opacity: 1; }
-
     .thumb-bar:nth-child(1) { height: 55%; background: var(--navy); }
     .thumb-bar:nth-child(2) { height: 80%; }
     .thumb-bar:nth-child(3) { height: 40%; background: var(--accent); }
@@ -592,253 +150,125 @@
     .thumb-bar:nth-child(5) { height: 90%; background: var(--navy); }
     .thumb-bar:nth-child(6) { height: 50%; }
 
-    .project-badge {
-      position: absolute;
-      top: 1rem; left: 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
-      border-radius: 20px;
-    }
+    /* "View Project" hover hint */
+    .hover-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(13,27,42,.5); opacity: 0; transition: opacity var(--transition); }
+    .project-card:hover .hover-hint { opacity: 1; }
+    .hover-hint span { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); border: 1px solid rgba(255,255,255,.6); padding: 0.6rem 1.4rem; border-radius: var(--radius); }
 
+    .project-badge { position: absolute; top: 1rem; left: 1rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 20px; z-index: 1; }
     .badge-blue { background: rgba(200,150,75,.9); color: var(--white); }
     .badge-dark { background: var(--navy); color: var(--white); }
+    .project-body { padding: 1.5rem 1.75rem 1.75rem; }
+    .project-meta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+    .project-body h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.2; }
+    .project-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tool-tag { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); background: var(--off-white); border: 1px solid var(--border); border-radius: 4px; padding: 0.2rem 0.6rem; }
 
-    .project-body {
-      padding: 1.5rem 1.75rem 1.75rem;
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(7,15,25,.75);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
     }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
 
-    .project-meta {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .project-body h3 {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 0.6rem;
-      line-height: 1.2;
-    }
-
-    .project-body p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-      margin-bottom: 1.2rem;
-    }
-
-    .project-tools {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-    }
-
-    .tool-tag {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--navy);
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.2rem 0.6rem;
-    }
-
-    /* ═══════════════════════════════════════════
-       EXPERIENCE SECTION
-    ═══════════════════════════════════════════ */
-    #experience {
-      padding: 7rem 0;
-      background: var(--off-white);
-    }
-
-    .experience-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .exp-card {
+    .modal {
       background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.75rem;
-      transition: box-shadow var(--transition), border-color var(--transition);
-    }
-
-    .exp-card:hover {
-      box-shadow: var(--shadow);
-      border-color: var(--navy-light);
-    }
-
-    .exp-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.8rem;
-    }
-
-    .exp-org {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    .exp-date {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-    }
-
-    .exp-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 0.6rem;
-    }
-
-    .exp-card p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    /* ═══════════════════════════════════════════
-       CONTACT
-    ═══════════════════════════════════════════ */
-    #contact {
-      padding: 7rem 0;
-      background: var(--navy);
+      border-radius: 16px;
+      width: 100%; max-width: 760px;
+      max-height: 90vh; overflow-y: auto;
       position: relative;
-      overflow: hidden;
+      transform: translateY(28px) scale(0.97);
+      transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+      box-shadow: 0 40px 100px rgba(7,15,25,.4);
     }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
 
-    #contact::before {
-      content: '';
-      position: absolute;
-      bottom: -150px; left: -150px;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,150,75,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    /* scrollbar style for modal */
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-track { background: transparent; }
+    .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-    #contact::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-    }
+    .modal-hero { height: 220px; position: relative; overflow: hidden; border-radius: 16px 16px 0 0; }
+    .modal-hero.thumb-1 { background: var(--navy); }
+    .modal-hero.thumb-2 { background: #f0f4f8; }
 
-    .contact-inner {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-    }
+    .modal-hero-art-1 { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 32px 32px; display: flex; align-items: center; justify-content: center; }
+    .modal-hero-circle { width: 130px; height: 130px; border-radius: 50%; border: 2px dashed rgba(200,150,75,.5); display: flex; align-items: center; justify-content: center; }
+    .modal-hero-dot { width: 70px; height: 70px; border-radius: 50%; background: var(--accent); opacity: 0.8; }
 
+    .modal-hero-art-2 { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 10px; padding: 0 2.5rem 2rem; }
+    .modal-bar { flex: 1; border-radius: 4px 4px 0 0; background: var(--navy-light); opacity: 0.7; }
+    .modal-bar:nth-child(1) { height: 55%; background: var(--navy); }
+    .modal-bar:nth-child(2) { height: 80%; }
+    .modal-bar:nth-child(3) { height: 40%; background: var(--accent); }
+    .modal-bar:nth-child(4) { height: 65%; }
+    .modal-bar:nth-child(5) { height: 90%; background: var(--navy); }
+    .modal-bar:nth-child(6) { height: 50%; }
+
+    .modal-close { position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.15); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1rem; transition: background var(--transition); z-index: 10; }
+    .modal-close:hover { background: rgba(255,255,255,.3); }
+
+    .modal-badge { position: absolute; top: 1rem; left: 1rem; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 20px; z-index: 1; }
+
+    .modal-body { padding: 2rem 2.5rem 2.5rem; }
+    .modal-meta { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .modal-title { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: var(--navy); line-height: 1.15; margin-bottom: 1.75rem; }
+
+    .modal-section-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; display: block; }
+    .modal-text { font-size: 0.93rem; color: var(--text-body); line-height: 1.75; font-weight: 300; margin-bottom: 1.75rem; }
+
+    .modal-findings { background: var(--off-white); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; border-left: 3px solid var(--accent); }
+    .modal-findings ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .modal-findings li { font-size: 0.88rem; color: var(--text-body); line-height: 1.65; padding-left: 1.4rem; position: relative; }
+    .modal-findings li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-family: var(--font-mono); font-size: 0.8rem; }
+
+    .modal-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+
+    .modal-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .modal-footer-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+
+    .modal-github-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--navy); color: var(--white); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.65rem 1.4rem; border-radius: var(--radius); text-decoration: none; transition: background var(--transition), transform var(--transition); }
+    .modal-github-btn:hover { background: var(--accent); transform: translateY(-1px); }
+    .modal-github-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── Experience ── */
+    #experience { padding: 7rem 0; background: var(--off-white); }
+    .experience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .exp-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1.75rem; transition: box-shadow var(--transition), border-color var(--transition); }
+    .exp-card:hover { box-shadow: var(--shadow); border-color: var(--navy-light); }
+    .exp-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+    .exp-org { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .exp-date { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted); }
+    .exp-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+    .exp-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── Contact ── */
+    #contact { padding: 7rem 0; background: var(--navy); position: relative; overflow: hidden; }
+    #contact::before { content: ''; position: absolute; bottom: -150px; left: -150px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(200,150,75,.12) 0%, transparent 70%); pointer-events: none; }
+    #contact::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .contact-inner { position: relative; z-index: 1; text-align: center; }
     .contact-inner .section-label { color: var(--accent-dim); }
-
-    .contact-inner .section-title {
-      color: var(--white);
-      margin-bottom: 1.2rem;
-    }
-
-    .contact-inner p {
-      font-size: 1rem;
-      color: rgba(255,255,255,.55);
-      max-width: 440px;
-      margin: 0 auto 2.5rem;
-      font-weight: 300;
-    }
-
-    .contact-email-link {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      color: var(--accent-dim);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(200,150,75,.4);
-      padding-bottom: 3px;
-      margin-bottom: 2.5rem;
-      transition: color var(--transition), border-color var(--transition);
-    }
-
+    .contact-inner .section-title { color: var(--white); margin-bottom: 1.2rem; }
+    .contact-inner p { font-size: 1rem; color: rgba(255,255,255,.55); max-width: 440px; margin: 0 auto 2.5rem; font-weight: 300; }
+    .contact-email-link { display: inline-block; font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent-dim); text-decoration: none; border-bottom: 1px solid rgba(200,150,75,.4); padding-bottom: 3px; margin-bottom: 2.5rem; transition: color var(--transition), border-color var(--transition); }
     .contact-email-link:hover { color: var(--white); border-color: var(--white); }
+    .contact-links { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .contact-link-btn { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,.6); text-decoration: none; border: 1px solid rgba(255,255,255,.15); padding: 0.6rem 1.4rem; border-radius: var(--radius); transition: color var(--transition), border-color var(--transition), background var(--transition); }
+    .contact-link-btn:hover { color: var(--navy); background: var(--white); border-color: var(--white); }
 
-    .contact-links {
-      display: flex;
-      gap: 1.2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    /* ── Footer ── */
+    footer { background: #070f19; padding: 2rem 0; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; }
+    .footer-name { font-family: var(--font-display); font-size: 0.95rem; color: rgba(255,255,255,.4); }
+    .footer-copy { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: rgba(255,255,255,.25); }
 
-    .contact-link-btn {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.6);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,.15);
-      padding: 0.6rem 1.4rem;
-      border-radius: var(--radius);
-      transition: color var(--transition), border-color var(--transition), background var(--transition);
-    }
-
-    .contact-link-btn:hover {
-      color: var(--navy);
-      background: var(--white);
-      border-color: var(--white);
-    }
-
-    /* ═══════════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════════ */
-    footer {
-      background: #070f19;
-      padding: 2rem 0;
-      border-top: 1px solid rgba(255,255,255,.06);
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-name {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      color: rgba(255,255,255,.4);
-    }
-
-    .footer-copy {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      color: rgba(255,255,255,.25);
-    }
-
-    /* ═══════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════ */
+    /* ── Responsive ── */
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .hero-card { display: none; }
@@ -847,16 +277,18 @@
       .experience-grid { grid-template-columns: 1fr; }
       .work-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .footer-inner { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .modal-body { padding: 1.5rem; }
+      .modal-footer { flex-direction: column; align-items: flex-start; }
     }
-
     @media (max-width: 600px) {
       .nav-links { display: none; }
+      .modal-title { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════ NAV ═══════════ -->
+  <!-- ═══ NAV ═══ -->
   <nav id="navbar">
     <div class="container nav-inner">
       <a href="#hero" class="nav-logo">Reeyan <span>Shah</span></a>
@@ -869,58 +301,41 @@
     </div>
   </nav>
 
-  <!-- ═══════════ HERO ═══════════ -->
+  <!-- ═══ HERO ═══ -->
   <section id="hero">
     <div class="hero-inner">
-
       <div class="hero-content">
         <div class="hero-tag fade-up delay-1">Internships · Summer 2027</div>
-
         <h1 class="hero-headline fade-up delay-2">
-          Mechanical<br/>
-          <em>Engineer</em><br/>
-          at Boston University
+          Mechanical<br/><em>Engineer</em><br/>at Boston University
         </h1>
-
-        <!-- ★ EDIT: update this bio to match your current focus -->
         <p class="hero-bio fade-up delay-3">
           First-year ME student with hands-on experience in precision machining, CAD, and materials science.
           Passionate about sustainable energy systems and the future of automotive engineering.
           Open to opportunities across North America and Europe.
         </p>
-
         <div class="hero-actions fade-up delay-4">
           <a href="#work" class="btn-primary">View Projects</a>
           <a href="#contact" class="btn-ghost">Get in touch →</a>
         </div>
       </div>
-
-      <!-- Stats sidebar card -->
       <div class="hero-card fade-up delay-5">
         <div class="hero-card-label">// quick profile</div>
-
         <div class="hero-card-stat">
-          <!-- ★ EDIT: update year -->
           <div class="num">Year 1</div>
-          <div class="label">Mechanical Engineering, BU</div>
+          <div class="label">Mechanical Engineering, Boston University</div>
         </div>
         <hr class="hero-card-divider"/>
-
         <div class="hero-card-stat">
-          <!-- ★ EDIT: update certifications count -->
           <div class="num">3×</div>
           <div class="label">EPIC Machining Certifications</div>
         </div>
         <hr class="hero-card-divider"/>
-
         <div class="hero-card-stat">
-          <!-- ★ EDIT: update role title -->
-          <div class="num">Dir.</div>
-          <div class="label">Education — BU Venture Capital Group</div>
+          <div class="num">Formula SAE</div>
+          <div class="label">Member - Terrier Motorsport</div>
         </div>
         <hr class="hero-card-divider"/>
-
-        <!-- ★ EDIT: add/remove interest tags -->
         <div class="hero-card-tags">
           <span class="tag-pill">Sustainable Energy</span>
           <span class="tag-pill">Automotive</span>
@@ -928,43 +343,24 @@
           <span class="tag-pill">Venture Capital</span>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ═══════════ ABOUT ═══════════ -->
+  <!-- ═══ ABOUT ═══ -->
   <section id="about">
     <div class="container">
       <div class="about-grid">
-
-        <!-- Text column -->
         <div class="about-text">
           <span class="section-label">// 01 — About</span>
           <h2 class="section-title" style="margin-bottom:1.5rem;">Built to build<br/>things that matter.</h2>
-          <!-- ★ EDIT: replace with your own bio paragraphs -->
-          <p>
-            I'm <span class="about-highlight">Reeyan Shah</span>, a Mechanical Engineering student at Boston University
-            with a focus on sustainable energy systems and advanced manufacturing.
-            My hands are as familiar with a manual lathe as they are with Fusion 360.
-          </p>
-          <p>
-            Outside of the lab, I lead introductory venture capital education as
-            <span class="about-highlight">Director of Education</span> at BUVCG,
-            helping students think like investors when evaluating early-stage companies.
-          </p>
-          <p>
-            I'm actively seeking summer internship opportunities where engineering rigour meets
-            real-world impact — whether that's in clean energy, automotive, or advanced manufacturing.
-          </p>
+          <p>I'm <span class="about-highlight">Reeyan Shah</span>, a Mechanical Engineering student at Boston University with a focus on sustainable energy systems and automotive engineering. My hands are as familiar with a machines in the workshop as they are with Fusion 360.</p>
+          <p>Outside of the lab, I lead introductory venture capital education as the <span class="about-highlight">VP of internal relations</span> at BUVCG, helping students think like investors when evaluating early-stage companies.</p>
+          <p>I'm actively seeking summer internship opportunities where engineering rigour meets real-world impact — whether that's in clean energy, automotive, or advanced manufacturing.</p>
         </div>
-
-        <!-- Skill cards column -->
         <div class="skills-col">
           <span class="section-label">// Core Skills</span>
           <h2 class="section-title">What I<br/>bring.</h2>
           <div class="skill-cards">
-
-            <!-- ★ EDIT: update icon (emoji), title, and description for each card -->
             <div class="skill-card">
               <div class="skill-icon">🖊️</div>
               <div class="skill-card-body">
@@ -972,7 +368,6 @@
                 <p>Fusion 360, SolidWorks. From concept sketches to machining-ready drawings with tight tolerances.</p>
               </div>
             </div>
-
             <div class="skill-card">
               <div class="skill-icon">⚙️</div>
               <div class="skill-card-body">
@@ -980,7 +375,6 @@
                 <p>EPIC-certified on Manual Mill, Manual Lathe, and CNC Mill. Comfortable going from CAM to chips.</p>
               </div>
             </div>
-
             <div class="skill-card">
               <div class="skill-icon">💡</div>
               <div class="skill-card-body">
@@ -988,14 +382,13 @@
                 <p>Materials science, failure analysis, and corrosion engineering — understanding why things break.</p>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════ WORK / PROJECTS ═══════════ -->
+  <!-- ═══ WORK ═══ -->
   <section id="work">
     <div class="container">
       <div class="work-header">
@@ -1003,148 +396,292 @@
           <span class="section-label">// 02 — Work</span>
           <h2 class="section-title">Selected<br/>Projects.</h2>
         </div>
-        <!-- ★ EDIT: link to your GitHub or a projects page -->
-        <a href="https://github.com/" target="_blank" class="work-link">All projects →</a>
+        <!-- ★ EDIT: update href to your GitHub profile -->
+        <a href="https://github.com/shahrm83-oss" target="_blank" class="work-link">All projects on GitHub →</a>
       </div>
 
       <div class="projects-grid">
 
-        <!-- ★ PROJECT CARD 1 — Edit all fields below ★ -->
-        <a href="#" class="project-card">
+        <!-- PROJECT CARD 1 — clicking opens modal-1 -->
+        <div class="project-card" onclick="openModal('modal-1')">
           <div class="project-thumb thumb-1">
             <div class="thumb-1-art">
               <div class="thumb-1-circle"><div class="thumb-1-inner"></div></div>
             </div>
+            <div class="hover-hint"><span>View Project</span></div>
             <span class="project-badge badge-blue">Machining</span>
           </div>
           <div class="project-body">
-            <div class="project-meta">Terrier Motorsport · 2024</div>
-            <h3>CNC Aluminium Axle Mount</h3>
-            <p>
-              Designed and machined a 6061-T6 aluminium axle mount for BU's Formula-style race car.
-              Managed CAM toolpaths in Fusion 360 and held ±0.005″ tolerances on critical features.
-            </p>
+            <div class="project-meta">Terrier Motorsport · 2026</div>
+            <h3>Battery Powered Car</h3>
+            <p>Designed and machined a battery powered car as part of the onboarding project for new mechanical team members.</p>
             <div class="project-tools">
               <span class="tool-tag">Fusion 360</span>
               <span class="tool-tag">CNC Mill</span>
-              <span class="tool-tag">6061-T6 Al</span>
-              <span class="tool-tag">GD&amp;T</span>
+              <span class="tool-tag">Manual Lathe</span>
+              <span class="tool-tag">Laser Cutter</span>
             </div>
           </div>
-        </a>
+        </div>
 
-        <!-- ★ PROJECT CARD 2 — Edit all fields below ★ -->
-        <a href="#" class="project-card">
+        <!-- PROJECT CARD 2 — clicking opens modal-2 -->
+        <div class="project-card" onclick="openModal('modal-2')">
           <div class="project-thumb thumb-2">
             <div class="thumb-2-art">
-              <div class="thumb-bar"></div>
-              <div class="thumb-bar"></div>
-              <div class="thumb-bar"></div>
-              <div class="thumb-bar"></div>
-              <div class="thumb-bar"></div>
-              <div class="thumb-bar"></div>
+              <div class="thumb-bar"></div><div class="thumb-bar"></div>
+              <div class="thumb-bar"></div><div class="thumb-bar"></div>
+              <div class="thumb-bar"></div><div class="thumb-bar"></div>
             </div>
+            <div class="hover-hint"><span>View Project</span></div>
             <span class="project-badge badge-dark">Materials Science</span>
           </div>
           <div class="project-body">
-            <div class="project-meta">MSE 306 Research · 2024</div>
+            <div class="project-meta">MSE 306 Research · 2026</div>
             <h3>Corrosion in Coastal PV Mounting Systems</h3>
-            <p>
-              Analysed the corrosion behaviour of AA6063-T6 aluminium and galvanised steel in Boston's
-              marine environment, with recommendations for anodisation and protective coatings.
-            </p>
+            <p>Analysed the corrosion behaviour of AA6063-T6 aluminium and galvanised steel in Boston's marine environment.</p>
             <div class="project-tools">
               <span class="tool-tag">Materials Science</span>
               <span class="tool-tag">Corrosion Analysis</span>
               <span class="tool-tag">AA6063-T6</span>
             </div>
           </div>
-        </a>
+        </div>
 
-        <!-- ★ ADD MORE PROJECT CARDS HERE by copying the block above ★ -->
+        <!-- ★ TO ADD A NEW PROJECT:
+             1. Copy one of the project-card divs above
+             2. Change onclick to a new id e.g. onclick="openModal('modal-3')"
+             3. Update all text inside
+             4. Copy a modal block below and give it id="modal-3"
+        ★ -->
 
       </div>
     </div>
   </section>
 
-  <!-- ═══════════ EXPERIENCE ═══════════ -->
+  <!-- ═══════════════════════════════════
+       MODALS — one per project
+  ═══════════════════════════════════ -->
+
+  <!-- MODAL 1 — Battery Powered Car -->
+  <div class="modal-overlay" id="modal-1" onclick="handleOverlayClick(event,'modal-1')">
+    <div class="modal">
+      <div class="modal-hero thumb-1">
+        <div class="modal-hero-art-1">
+          <div class="modal-hero-circle"><div class="modal-hero-dot"></div></div>
+        </div>
+        <span class="modal-badge badge-blue">Machining</span>
+        <button class="modal-close" onclick="closeModal('modal-1')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">Terrier Motorsport · 2026</div>
+        <h2 class="modal-title">Battery Powered Car</h2>
+
+        <span class="modal-section-label">// Overview</span>
+        <p class="modal-text">
+          <!-- ★ EDIT: expand with more detail -->
+          As part of Terrier Motorsport's onboarding process, new mechanical team members design and
+          fabricate a fully functional battery-powered car from scratch — covering the complete engineering
+          workflow from initial concept through to a running vehicle.
+        </p>
+
+        <span class="modal-section-label">// What I Did</span>
+        <p class="modal-text">
+          <!-- ★ EDIT: describe your specific contributions -->
+          Created detailed CAD models in Fusion 360 and generated toolpaths for the CNC mill. Machined
+          structural components to sub-millimetre precision, used the laser cutter for chassis panels,
+          and turned axle components on the manual lathe. Assembled and tested the final vehicle.
+        </p>
+
+        <span class="modal-section-label">// Key Outcomes</span>
+        <div class="modal-findings">
+          <ul>
+            <!-- ★ EDIT: replace with your actual results -->
+            <li>Completed full CAD-to-part workflow independently using Fusion 360 and CNC Mill</li>
+            <li>Machined components to sub-millimetre tolerances across multiple fabrication tools</li>
+            <li>Gained experience coordinating CAM, manual machining, and laser cutting on a single build</li>
+            <li>Vehicle passed all functional tests and joined the Terrier Motorsport project fleet</li>
+          </ul>
+        </div>
+
+        <span class="modal-section-label">// Tools &amp; Technologies</span>
+        <div class="modal-tools">
+          <span class="tool-tag">Fusion 360</span>
+          <span class="tool-tag">CNC Mill</span>
+          <span class="tool-tag">Manual Lathe</span>
+          <span class="tool-tag">Laser Cutter</span>
+          <span class="tool-tag">CAM</span>
+          <span class="tool-tag">GD&amp;T</span>
+        </div>
+
+        <div class="modal-footer">
+          <span class="modal-footer-note">Full files and documentation on GitHub</span>
+          <!-- ★ EDIT: update href to your actual repo -->
+          <a href="https://github.com/shahrm83-oss/TM-Car" target="_blank" class="modal-github-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2 — PV Corrosion Study -->
+  <div class="modal-overlay" id="modal-2" onclick="handleOverlayClick(event,'modal-2')">
+    <div class="modal">
+      <div class="modal-hero thumb-2">
+        <div class="modal-hero-art-2">
+          <div class="modal-bar"></div><div class="modal-bar"></div>
+          <div class="modal-bar"></div><div class="modal-bar"></div>
+          <div class="modal-bar"></div><div class="modal-bar"></div>
+        </div>
+        <span class="modal-badge badge-dark">Materials Science</span>
+        <button class="modal-close" onclick="closeModal('modal-2')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta">MSE 306 Research · 2026</div>
+        <h2 class="modal-title">Corrosion in Coastal PV Mounting Systems</h2>
+
+        <span class="modal-section-label">// Overview</span>
+        <p class="modal-text">
+          Photovoltaic mounting systems along the northeastern US coastline face accelerated degradation
+          from salt-laden air, moisture cycling, and temperature fluctuations. This study investigates
+          the corrosion performance of <strong>AA6063-T6 aluminium</strong> and <strong>hot-dip galvanised steel</strong> —
+          two materials widely used in PV racking — and evaluates protective treatments to extend
+          service life beyond the typical 25–30 year design target.
+        </p>
+
+        <span class="modal-section-label">// What I Did</span>
+        <p class="modal-text">
+          Analysed corrosion mechanisms affecting AA6063-T6 in marine environments, focusing on
+          intergranular corrosion and pitting. Evaluated anodisation as a surface treatment and assessed
+          hot-dip galvanising on steel hardware. Reviewed electrochemical data and corrosion rate models
+          relevant to Boston's climate and produced material selection and protective coating recommendations.
+        </p>
+
+        <span class="modal-section-label">// Key Findings</span>
+        <div class="modal-findings">
+          <ul>
+            <li>AA6063-T6 with a 25 µm hard-anodised coating significantly outperforms untreated aluminium in chloride-rich environments</li>
+            <li>Galvanic coupling between aluminium frames and steel fasteners is a primary failure mode — isolation washers recommended</li>
+            <li>Hot-dip galvanised steel requires additional barrier coatings in direct coastal exposure zones</li>
+            <li>Anodised aluminium identified as the preferred primary structural material for Boston-area coastal PV racking</li>
+          </ul>
+        </div>
+
+        <span class="modal-section-label">// Tools &amp; Concepts</span>
+        <div class="modal-tools">
+          <span class="tool-tag">Materials Science</span>
+          <span class="tool-tag">Corrosion Engineering</span>
+          <span class="tool-tag">Electrochemistry</span>
+          <span class="tool-tag">AA6063-T6</span>
+          <span class="tool-tag">Anodisation</span>
+          <span class="tool-tag">Galvanising</span>
+          <span class="tool-tag">Failure Analysis</span>
+        </div>
+
+        <div class="modal-footer">
+          <span class="modal-footer-note">Full report and README on GitHub</span>
+          <!-- ★ EDIT: update href to your actual repo -->
+          <a href="https://github.com/shahrm83-oss/pv-corrosion-study" target="_blank" class="modal-github-btn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EXPERIENCE ═══ -->
   <section id="experience">
     <div class="container">
       <span class="section-label">// 03 — Experience</span>
       <h2 class="section-title">Where I've<br/>been.</h2>
-
       <div class="experience-grid">
-
-        <!-- ★ EDIT each exp-card — org, date, role, description -->
         <div class="exp-card">
           <div class="exp-card-top">
             <span class="exp-org">BU Venture Capital Group</span>
-            <span class="exp-date">2024 – Present</span>
+            <span class="exp-date">2026 – Present</span>
           </div>
-          <h3>Director of Education</h3>
-          <p>Lead weekly introductory VC sessions for ~30 students. Support cohorts with pitch deck development and startup due diligence frameworks.</p>
+          <h3>VP of Internal Relations</h3>
+          <p>Lead weekly introductory VC sessions for ~30 students. Support cohorts with pitch deck development and startup due diligence frameworks. In addition, manage communication and
+administrative tasks to ensure the smooth operation of the organization</p>
         </div>
-
         <div class="exp-card">
           <div class="exp-card-top">
             <span class="exp-org">Terrier Motorsport</span>
-            <span class="exp-date">2024 – Present</span>
+            <span class="exp-date">2026 – Present</span>
           </div>
           <h3>Mechanical Team Member</h3>
           <p>Contribute to the design, fabrication, and testing of BU's Formula-style race car. Focus on suspension and drivetrain components.</p>
         </div>
-
         <div class="exp-card">
           <div class="exp-card-top">
             <span class="exp-org">Boston University EPIC</span>
-            <span class="exp-date">2024</span>
+            <span class="exp-date">2025</span>
           </div>
           <h3>EPIC Machining Certifications</h3>
           <p>Completed certifications in Manual Mill, Manual Lathe, and CNC Mill — qualifying for independent machine access in BU's engineering fabrication lab.</p>
         </div>
-
-        <!-- ★ ADD MORE exp-cards here as needed -->
-
       </div>
     </div>
   </section>
 
-  <!-- ═══════════ CONTACT ═══════════ -->
+  <!-- ═══ CONTACT ═══ -->
   <section id="contact">
     <div class="container">
       <div class="contact-inner">
         <span class="section-label">// 04 — Contact</span>
         <h2 class="section-title">Let's work<br/>together.</h2>
         <p>Open to summer internships in engineering, clean energy, and automotive. Happy to chat about projects, ideas, or opportunities.</p>
-
-        <!-- ★ EDIT: update email address -->
         <div>
-          <a href="mailto:shahrm83@bu.edu" class="contact-email-link">shahrm83@bu.edu</a>
+         <a href="https://mail.google.com/mail/?view=cm&to=reeyan.shah456@gmail.com" target="_blank" class="contact-email-link">reeyan.shah456@gmail.com</a>
         </div>
-
         <div class="contact-links">
-          <!-- ★ EDIT: update href values to your actual profiles -->
           <a href="https://linkedin.com/in/reeyan-shah-758979296" target="_blank" class="contact-link-btn">LinkedIn</a>
-          <a href="https://github.com/" target="_blank" class="contact-link-btn">GitHub</a>
+          <a href="https://github.com/shahrm83-oss" target="_blank" class="contact-link-btn">GitHub</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════ FOOTER ═══════════ -->
+  <!-- ═══ FOOTER ═══ -->
   <footer>
     <div class="container footer-inner">
       <span class="footer-name">Reeyan Shah</span>
-      <!-- ★ EDIT: update year -->
-      <span class="footer-copy">© 2025 · Boston University · Mechanical Engineering</span>
+      <span class="footer-copy">© 2026 · Boston University · Mechanical Engineering</span>
     </div>
   </footer>
 
   <script>
-    // Scroll shadow on navbar
+    // Navbar shadow on scroll
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Open a modal by id
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+      document.body.classList.add('modal-open');
+    }
+
+    // Close a modal by id
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+      document.body.classList.remove('modal-open');
+    }
+
+    // Close when clicking the dark backdrop (not the modal panel itself)
+    function handleOverlayClick(event, id) {
+      if (event.target === document.getElementById(id)) closeModal(id);
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(el => el.classList.remove('open'));
+        document.body.classList.remove('modal-open');
+      }
     });
   </script>
 
